@@ -1,0 +1,12 @@
+{
+  "name": "Tether — a space for two",
+  "short_name": "Tether",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fffaf5",
+  "theme_color": "#f8efe7",
+  "description": "A private little space for two.",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

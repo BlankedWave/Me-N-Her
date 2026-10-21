@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8efe7">
+  <meta name="description" content="A private little space for two.">
+  <meta property="og:title" content="Tether — a space for two">
+  <meta property="og:description" content="Check in, make plans, and keep the little things.">
+  <title>Tether — a space for two</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main class="app-shell" id="app" aria-live="polite">
+    <header class="topbar">
+      <button class="avatar-button" data-go="us" aria-label="Open your space">
+        <span class="avatar avatar-me">A</span><span class="avatar avatar-partner">J</span>
+        <span class="online-dot"></span>
+      </button>
+      <div class="brand"><span>Tether</span><small>OUR LITTLE CORNER</small></div>
+      <button class="icon-button" id="installButton" aria-label="Install app" title="Install app">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3"/></svg>
+      </button>
+    </header>
+
+    <div class="view-stack">
+      <section class="view active" data-view="home">
+        <div class="home-hero">
+          <p class="eyebrow" id="todayLabel">WEDNESDAY, OCTOBER 21</p>
+          <h1>Good evening,<br><em>you two.</em></h1>
+          <div class="streak-pill"><span class="spark-mark"></span><strong id="streakCount">18</strong> days of showing up</div>
+        </div>
+
+        <section class="mood-card paper-card">
+          <div class="section-heading"><div><span class="kicker">DAILY CHECK-IN</span><h2>How’s your heart today?</h2></div><span class="status-dot" title="Not checked in"></span></div>
+          <div class="mood-options" role="group" aria-label="Choose your mood">
+            <button data-mood="low"><span class="mood-glyph low"></span><small>Low</small></button>
+            <button data-mood="tender"><span class="mood-glyph tender"></span><small>Tender</small></button>
+            <button data-mood="steady"><span class="mood-glyph steady"></span><small>Steady</small></button>
+            <button data-mood="bright"><span class="mood-glyph bright"></span><small>Bright</small></button>
+            <button data-mood="full"><span class="mood-glyph full"></span><small>Full</small></button>
+          </div>
+          <p class="partner-checkin"><span class="mini-avatar">J</span><span>Jamie checked in</span><strong>STEADY</strong></p>
+        </section>
+
+        <section class="prompt-card">
+          <div class="prompt-top"><span>QUESTION FOR TWO</span><button id="shufflePrompt">Another one</button></div>
+          <blockquote id="dailyPrompt">“What small thing made you feel loved this week?”</blockquote>
+          <button class="answer-button" id="answerPrompt">Answer together <span>→</span></button>
+        </section>
+
+        <section class="next-up">
+          <div class="section-title-row"><div><span class="kicker">NEXT UP</span><h2>Something to look forward to</h2></div><button data-go="plans">See all</button></div>
+          <article class="date-card">
+            <div class="date-tile"><small>OCT</small><strong>26</strong></div>
+            <div><span class="soft-label">DATE NIGHT</span><h3>Museum after dark</h3><p>Saturday · 7:00 PM</p></div>
+            <button class="more-button" aria-label="Plan options">•••</button>
+          </article>
+        </section>
+        <p class="footer-note">Made for the quiet, ordinary magic.</p>
+      </section>
+
+      <section class="view" data-view="chat">
+        <div class="view-intro compact"><span class="kicker">JUST US</span><h1>Say what matters.</h1><p>Private messages for the two of you.</p></div>
+        <div class="chat-day">TODAY</div>
+        <div class="messages" id="messageList"></div>
+        <form class="composer" id="chatForm">
+          <button type="button" class="attach-button" aria-label="Add attachment">+</button>
+          <input id="chatInput" autocomplete="off" placeholder="Write to Jamie…" aria-label="Message">
+          <button class="send-button" aria-label="Send message">
+            <svg viewBox="0 0 24 24"><path d="m4 12 16-8-5 16-3-7-8-1Zm8 1 8-9"/></svg>
+          </button>
+        </form>
+      </section>
+
+      <section class="view" data-view="moments">
+        <div class="view-intro"><span class="kicker">OUR ARCHIVE</span><h1>The things<br><em>worth keeping.</em></h1><p>Big days, small details, and everything between.</p></div>
+        <div class="memory-toolbar"><span id="memoryCount">2 memories</span><button class="primary-small" data-open="memoryModal">+ Add a moment</button></div>
+        <div class="memory-grid" id="memoryGrid"></div>
+      </section>
+
+      <section class="view" data-view="plans">
+        <div class="view-intro"><span class="kicker">OUR CALENDAR</span><h1>Make more<br><em>time for us.</em></h1><p>Plans, ideas, and the someday list.</p></div>
+        <button class="wide-action" data-open="planModal"><span>+</span> Plan something together</button>
+        <div class="plan-filter" role="tablist">
+          <button class="active" data-filter="all">All</button><button data-filter="upcoming">Upcoming</button><button data-filter="done">Done</button>
+        </div>
+        <div class="plans-list" id="plansList"></div>
+        <section class="idea-strip">
+          <span class="kicker">NEED AN IDEA?</span><h3>Try a no-phone picnic.</h3><p>Pick one snack each, walk somewhere green, and leave the screens at home.</p>
+        </section>
+      </section>
+
+      <section class="view" data-view="us">
+        <div class="couple-banner">
+          <div class="large-avatars"><span>A</span><i></i><span>J</span></div>
+          <h1>Alex <em>&amp;</em> Jamie</h1><p>Together since May 18, 2023</p>
+          <div class="couple-stat"><strong>522</strong><span>days of us</span></div>
+        </div>
+        <section class="connect-card paper-card">
+          <div class="section-heading"><div><span class="kicker">PRIVATE SYNC</span><h2 id="syncTitle">Connect your two phones</h2></div><span class="sync-badge" id="syncBadge">DEMO</span></div>
+          <p id="syncDescription">Add Firebase, sign in with Google, then create or enter a private couple code.</p>
+          <button class="google-button" id="googleSignIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" d="M22.6 12.2c0-.7-.1-1.4-.2-2.1H12v4h6a5.1 5.1 0 0 1-2.2 3.3V20h3.5c2.1-1.9 3.3-4.6 3.3-7.8Z"/><path fill="#34a853" d="M12 23c3 0 5.5-1 7.3-3l-3.5-2.6c-1 .7-2.2 1-3.8 1a6.4 6.4 0 0 1-6-4.4H2.4v2.8A11 11 0 0 0 12 23Z"/><path fill="#fbbc05" d="M6 14a6.6 6.6 0 0 1 0-4V7.2H2.4a11 11 0 0 0 0 9.6L6 14Z"/><path fill="#ea4335" d="M12 5.6c1.6 0 3.1.6 4.3 1.7l3.1-3.1A10.5 10.5 0 0 0 12 1a11 11 0 0 0-9.6 6.2L6 10a6.4 6.4 0 0 1 6-4.4Z"/></svg>
+            Continue with Google
+          </button>
+          <div class="code-row"><button id="createSpace">Create our space</button><button id="joinSpace">Enter a code</button></div>
+          <div class="invite-code" id="inviteCode" hidden><small>YOUR PRIVATE CODE</small><strong>—</strong><button id="copyCode">Copy</button></div>
+        </section>
+        <div class="settings-list">
+          <button data-open="milestoneModal"><span class="setting-icon">01</span><span><strong>Important dates</strong><small>Anniversary, birthdays, milestones</small></span><b>›</b></button>
+          <button><span class="setting-icon">02</span><span><strong>Our preferences</strong><small>Names, love languages, reminders</small></span><b>›</b></button>
+          <button id="resetDemo"><span class="setting-icon">03</span><span><strong>Reset demo data</strong><small>Start this preview fresh</small></span><b>›</b></button>
+        </div>
+        <p class="privacy-note">Your shared space is private by design. No ads. No public profiles.</p>
+      </section>
+    </div>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="active" data-go="home"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v10h-6v-6H9v6H3z"/></svg><span>Today</span></button>
+      <button data-go="chat"><svg viewBox="0 0 24 24"><path d="M4 5h16v12H9l-5 4z"/></svg><span>Chat</span></button>
+      <button data-go="moments"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m6 16 4-4 3 3 2-2 3 3M8 8h.01"/></svg><span>Moments</span></button>
+      <button data-go="plans"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg><span>Plans</span></button>
+      <button data-go="us"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 20c0-4 2-7 6-7s6 3 6 7m0-5c3 0 5 2 5 5"/></svg><span>Us</span></button>
+    </nav>
+    <!-- Navigation -->
+  </main>
+  <dialog id="memoryModal" class="sheet-modal">
+    <form method="dialog" id="memoryForm"><div class="sheet-handle"></div><div class="modal-title"><div><span class="kicker">A NEW MEMORY</span><h2>Keep this moment.</h2></div><button value="cancel" aria-label="Close">×</button></div>
+      <label>What happened?<input name="title" required placeholder="Late-night ice cream"></label>
+      <label>A detail worth remembering<textarea name="note" rows="3" placeholder="The song, the weather, the funny part…"></textarea></label>
+      <div class="form-actions"><button value="cancel">Cancel</button><button value="default" id="saveMemory">Save moment</button></div>
+    </form>
+  </dialog>
+  <dialog id="planModal" class="sheet-modal">
+    <form method="dialog" id="planForm"><div class="sheet-handle"></div><div class="modal-title"><div><span class="kicker">MAKE A PLAN</span><h2>Put it on your horizon.</h2></div><button value="cancel" aria-label="Close">×</button></div>
+      <label>Plan name<input name="title" required placeholder="Breakfast by the water"></label>
+      <label>When or where<input name="meta" placeholder="Saturday · 10:00 AM"></label>
+      <div class="form-actions"><button value="cancel">Cancel</button><button value="default" id="savePlan">Add plan</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast-note" role="status"></div>
+  <script src="firebase-config.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
